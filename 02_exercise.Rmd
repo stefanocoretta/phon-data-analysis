@@ -1,0 +1,208 @@
+---
+title: "An introduction to R for phonetics students"
+date: "`r format(Sys.time(), '%d-%b-%Y')`"
+output:
+  html_document:
+    toc: yes
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, eval = FALSE)
+```
+
+# Instructions
+
+Open the Rmarkdown file `Week8_Assignment.Rmd` in RStudio and read through it, filling in the code and answering the questions.
+
+When you are done, change the code above from `eval = FALSE` to `eval = TRUE`, then click on the `Knit` button. This will generate an HTML file you can view with your browser.
+
+If there are errors in your code, R will let you know. Make sure there are no errors before submitting.
+
+Please, submit both the `.Rmd` file and the generated HTML file to TurnItIn.
+
+# Getting data into R
+
+Make sure you have attached the tidyverse packages before you continue.
+
+```{r tidy}
+library(tidyverse)
+```
+
+First, load the `hillenbrand.txt` file. These data are from the study of Hillenbrand et al. (1995), "Acoustic characteristics of American English vowels", *The Journal of the Acoustical Society of America* 97, 3099-3111, DOI: [10.1121/1.411872](https://doi.org/10.1121/1.411872).
+
+Add the code to read the file and run it. You will need to specify this argument `delim = "\t"` in the function call.
+
+```{r hill}
+hillenbrand <- 
+```
+
+<!-- Hint: You may want to use `read_delim()`. -->
+
+Let's inspect the data.
+
+```{r hill-check}
+hillenbrand
+```
+
+The first column, `MWBG`, indicates the speaker's age and gender. It is a factor with 4 levels (`b`, `g`, `m`, and `w`) which stand for "boy", "girl", "man", and "woman", respectively. 
+
+Each row gives the average duration, f0, and first four formants for a given vowel quality for a given speaker.
+
+# Numerical summaries
+
+Each answer should have two parts: the R code you used to get the answer, and the answer itself. 
+
+Give your answers with the appropriate scale (e.g., "ms" for duration). Round your answers to the nearest integer value.
+
+1. What is the mean duration for the vowel `ae` over all speakers? (Get the mean duration for all vowels and report the mean duration of `ae`)
+
+```{r}
+hillenbrand %>%
+  group_by(...) %>%
+  summarise(
+    duration_mean = ...
+  )
+```
+
+2. What is the mean f0 for boys, averaging over all vowels?
+
+```{r}
+hillenbrand %>%
+  group_by(...) %>%
+  summarise(
+    f0_mean = ...
+  )
+```
+
+3. What is the mean f0 for the `aw` vowel for men?
+
+```{r}
+hillenbrand %>%
+  group_by(..., ...) %>%
+  summarise(
+    ... = ...
+  )
+```
+
+4. What is the median for F2 for the `uw` vowel for girls?
+
+```{r}
+hillenbrand %>%
+  group_by(..., ...) %>%
+  summarise(
+    ... = ...
+  )
+```
+
+5. What is the standard deviation for F1 for the `oo` vowel for women?
+
+```{r}
+hillenbrand %>%
+  group_by(..., ...) %>%
+  summarise(
+    ... = ...
+  )
+```
+
+6. Does the data set contain the same number of observations of the vowel `ei` for each age/gender combination?
+
+```{r}
+hillenbrand %>%
+  group_by(....) %>%
+  summarise(
+    obs_n = ...
+  )
+```
+
+7. Find the mean and standard deviation of the duration measures for each speaker age/gender group.
+
+```{r}
+
+
+
+```
+
+8. Find the mean and standard deviation of f0 for each vowel.
+
+```{r}
+
+
+
+```
+
+
+# Graphical summaries
+
+
+9. Create a strip chart of F1 of each vowel, averaging over speaker age/gender. Make sure that the F1 values are plotted on the *y*-axis and that the *y*-axis is labelled `F1 (Hz)`.
+
+```{r}
+hillenbrand %>%
+  ggplot(aes(..., ...)) +
+  geom_...() +
+  labs(
+    ....
+  )
+```
+
+
+10. Create a strip chart of vowel duration for each age/gender. Plot duration on the *x*-axis, and make sure the *x*-axis is labelled `Duration (ms)`. 
+
+```{r}
+hillenbrand %>%
+  ggplot(aes(..., ...)) +
+  ....
+```
+
+11. Reorder speaker age/gender so that the levels are in the order men - women - boys - girls. Then plot a strip chart of F1 for each vowel, faceted by speaker age/gender.
+
+```{r}
+hillenbrand %>%
+  mutate(
+    MWBG_re = factor(MWBG, levels = ....)
+  ) %>%
+  ggplot(aes(..., ...)) +
+  .... +
+  facet_grid(~ ...)
+```
+
+12. Plot histograms of f0, faceted by vowel and filled by speaker age/gender. Make sure the f0 variable is on the *x*-axis and that this is appropriately labelled. 
+
+```{r}
+hillenbrand %>%
+  ggplot(aes(..., fill = ...)) +
+  ... +                 # what's the right geometry?
+  ...(~ ...) +          # what's the function for faceting?
+  labs(
+    ...
+  )
+```
+
+13. Plot the f0 over all vowels for each speaker age/gender type as density plots. Instead of faceting, supply the call to the density geom with the argument `alpha = 0.5`. Make sure that the f0 variable is on the *x*-axis and that this is appropriately labelled.
+
+```{r}
+hillenbrand %>%
+  ggplot(aes(..., fill = ...)) +
+  ...(alpha = ...) +
+  labs(
+    ...
+  )
+```
+
+
+14. What is the following plot suggesting about the relationship between F1 and duration (run the code to see the plot)? What do you think this means in articulatory terms?
+
+```{r}
+hillenbrand %>%
+  ggplot(aes(F1, Duration)) +
+  geom_point(aes(colour = Vowel)) +
+  geom_smooth(method = "lm", formula = "y ~ x") +
+  labs(
+    x = "F1 (Hz)", y = "Duration (ms)"
+  ) +
+  theme_minimal()
+```
+
+<br>
+
+<br>
